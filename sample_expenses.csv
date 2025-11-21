@@ -1,0 +1,21 @@
+Date,Category,Amount,Description
+2023-01-01,Food,50.00,Lunch at restaurant
+2023-01-02,Transportation,20.00,Bus fare
+2023-01-03,Entertainment,30.00,Movie tickets
+2023-01-04,Food,25.00,Groceries
+2023-01-05,Utilities,100.00,Electricity bill
+2023-01-06,Food,15.00,Coffee
+2023-01-07,Transportation,15.00,Taxi
+2023-01-08,Entertainment,50.00,Concert
+2023-01-09,Food,40.00,Dinner
+2023-01-10,Utilities,80.00,Water bill
+2023-02-01,Food,60.00,Brunch
+2023-02-02,Transportation,25.00,Train ticket
+2023-02-03,Entertainment,40.00,Theater
+2023-02-04,Food,30.00,Snacks
+2023-02-05,Utilities,120.00,Gas bill
+2023-02-06,Food,20.00,Breakfast
+2023-02-07,Transportation,18.00,Bus fare
+2023-02-08,Entertainment,35.00,Game night
+2023-02-09,Food,45.00,Lunch
+2023-02-10,Utilities,90.00,Internet bill
