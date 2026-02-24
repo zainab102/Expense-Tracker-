@@ -1,10 +1,14 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
+import os
+import tempfile
 import pandas as pd
+
+os.environ.setdefault("MPLCONFIGDIR", os.path.join(tempfile.gettempdir(), "expense_tracker_mplconfig"))
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from fpdf import FPDF
-import os
 
 class ExpenseTrackerApp:
     def __init__(self, root):
@@ -65,6 +69,11 @@ class ExpenseTrackerApp:
         self.notebook = ttk.Notebook(main_frame)
         self.notebook.pack(fill=tk.BOTH, expand=True)
 
+        # Dashboard tab
+        dashboard_frame = ttk.Frame(self.notebook)
+        self.notebook.add(dashboard_frame, text="Dashboard")
+        self.create_dashboard(dashboard_frame)
+
         # Summary tab
         summary_frame = ttk.Frame(self.notebook)
         self.notebook.add(summary_frame, text="Summary")
@@ -105,6 +114,8 @@ class ExpenseTrackerApp:
         self.progress_frame.pack(fill=tk.X, pady=10)
 
         ttk.Label(self.progress_frame, text="Category Budget Progress:").pack(anchor=tk.W)
+        self.progress_bars_container = ttk.Frame(self.progress_frame)
+        self.progress_bars_container.pack(fill=tk.X, pady=(5, 0))
 
         self.progress_bars = {}
 
@@ -373,6 +384,9 @@ class ExpenseTrackerApp:
     def set_budget(self, category, entry):
         try:
             budget = float(entry.get())
+            if budget <= 0:
+                messagebox.showerror("Error", "Budget must be greater than zero.")
+                return
             self.budgets[category] = budget
             self.update_dashboard()
             messagebox.showinfo("Success", f"Budget set for {category}: ${budget:.2f}")
@@ -397,17 +411,19 @@ class ExpenseTrackerApp:
                 self.budget_status_label.config(text="Budget Status: On Track", foreground="green")
 
             # Update progress bars
-            for widget in self.progress_frame.winfo_children():
-                if isinstance(widget, ttk.Progressbar):
-                    widget.destroy()
+            for widget in self.progress_bars_container.winfo_children():
+                widget.destroy()
 
             for category in self.category_colors.keys():
                 if category in self.budgets:
                     cat_expenses = self.filtered_df[self.filtered_df['Category'] == category]['Amount'].sum()
                     budget = self.budgets[category]
+                    if budget <= 0:
+                        continue
+
                     percentage = min(cat_expenses / budget * 100, 100)
 
-                    bar_frame = ttk.Frame(self.progress_frame)
+                    bar_frame = ttk.Frame(self.progress_bars_container)
                     bar_frame.pack(fill=tk.X, pady=2)
                     ttk.Label(bar_frame, text=f"{category}: ${cat_expenses:.2f}/{budget:.2f}").pack(side=tk.LEFT)
                     progress = ttk.Progressbar(bar_frame, length=200, mode='determinate', value=percentage)
@@ -419,9 +435,8 @@ class ExpenseTrackerApp:
             self.budget_status_label.config(text="Budget Status: No Data", foreground="black")
 
             # Clear progress bars
-            for widget in self.progress_frame.winfo_children():
-                if isinstance(widget, ttk.Progressbar):
-                    widget.destroy()
+            for widget in self.progress_bars_container.winfo_children():
+                widget.destroy()
 
     def export_csv(self):
         if self.filtered_df is not None and not self.filtered_df.empty:
