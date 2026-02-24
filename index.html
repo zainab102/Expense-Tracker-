@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expense Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-shape one"></div>
+  <div class="bg-shape two"></div>
+  <main class="container">
+    <header class="hero">
+      <h1>Expense Tracker</h1>
+      <p>Analyze spending, set budgets, and export reports.</p>
+    </header>
+
+    <section class="panel controls">
+      <div class="row">
+        <div class="field">
+          <label for="monthFilter">Month</label>
+          <select id="monthFilter"></select>
+        </div>
+        <div class="field grow">
+          <label for="searchInput">Search</label>
+          <input id="searchInput" type="text" placeholder="Description or category">
+        </div>
+      </div>
+      <div class="row">
+        <button id="loadSampleBtn" class="btn">Load Sample Data</button>
+        <label class="btn btn-alt" for="csvUpload">Upload CSV</label>
+        <input id="csvUpload" type="file" accept=".csv" hidden>
+        <button id="exportCsvBtn" class="btn btn-alt">Export CSV</button>
+        <button id="exportPdfBtn" class="btn btn-alt">Export PDF</button>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <article class="panel">
+        <h2>Dashboard</h2>
+        <p id="totalExpenses" class="metric">$0.00</p>
+        <p id="budgetStatus">Budget Status: No Data</p>
+        <h3>Budgets</h3>
+        <div id="budgetInputs" class="budget-list"></div>
+        <h3>Progress</h3>
+        <div id="budgetProgress"></div>
+      </article>
+
+      <article class="panel">
+        <h2>Add Expense</h2>
+        <form id="addExpenseForm" class="stack">
+          <input id="addDate" type="date" required>
+          <input id="addCategory" type="text" placeholder="Category" required>
+          <input id="addAmount" type="number" step="0.01" min="0.01" placeholder="Amount" required>
+          <input id="addDescription" type="text" placeholder="Description">
+          <button type="submit" class="btn">Add Expense</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="grid two">
+      <article class="panel">
+        <h2>Summary</h2>
+        <pre id="summaryText">No data to display.</pre>
+      </article>
+      <article class="panel">
+        <h2>Data</h2>
+        <div class="table-wrap">
+          <table id="dataTable">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Charts</h2>
+      <div class="grid two">
+        <canvas id="categoryBar"></canvas>
+        <canvas id="categoryPie"></canvas>
+        <canvas id="dailyLine"></canvas>
+        <canvas id="monthlyBar"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
